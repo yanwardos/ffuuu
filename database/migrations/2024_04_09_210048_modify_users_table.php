@@ -14,7 +14,7 @@ class ModifyUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar', 255);
+            $table->string('avatar', 255)->nullable(true);
         });
     }
 
