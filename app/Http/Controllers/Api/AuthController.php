@@ -92,7 +92,7 @@ class AuthController extends Controller
             'data' => [
                 'user' => $user->only('name', 'email'),
                 'authToken' => $token
-            ]
+                ]
             ]);
 
         return json_encode([
