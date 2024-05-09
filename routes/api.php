@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,11 +19,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+// AUTH
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->get('/verifyAuth', [AuthController::class, 'verifyAuth']);
 
+// USERDATA
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('userData', [UserDataController::class, 'getUserData']);
+});
 
 
 
