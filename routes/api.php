@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/verifyAuth', [AuthController::class, 'v
 // USERDATA
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('userData', [UserDataController::class, 'getUserData']);
+    Route::patch('userData', [UserDataController::class, 'updateUserData']);
 });
 
 
