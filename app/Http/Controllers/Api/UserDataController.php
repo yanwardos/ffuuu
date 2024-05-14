@@ -116,13 +116,16 @@ class UserDataController extends Controller
         }
 
         // delete previous file 
-        $oldAvatarPath = env('PATH_USER_AVATAR').'/'.$user->avatar;
-        if(File::exists($oldAvatarPath)){ 
-            if(!Storage::delete($oldAvatarPath)){
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Failed deleting old avatar.'
-                ], 400); 
+        if($user->avatar){
+            $oldAvatarPath = env('PATH_USER_AVATAR').'/'.$user->avatar;
+            if(File::exists($oldAvatarPath)){ 
+                if(!Storage::delete($oldAvatarPath)){
+                    Storage::delete(env('PATH_USER_AVATAR').'/'.$filenameWithExt);
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'Failed deleting old avatar.'
+                    ], 400); 
+                }
             }
         }
 
