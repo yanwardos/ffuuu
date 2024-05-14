@@ -157,7 +157,7 @@ class UserDataController extends Controller
                 'status' => 'failed',
                 'message' => 'Form input error.',
                 'data' => [
-                    'formError' => $validator->errors()
+                        'formError' => $validator->errors()
                     ]
                 ], 422);
         }
@@ -177,7 +177,11 @@ class UserDataController extends Controller
                 'status' => 'error',
                 'message' => 'Wrong password.',
                 'data' => [
-                    'formError' => ['Please enter correct password.']
+                    'formError' => [
+                            'currentPassword' => [
+                                'Please enter correct password.'
+                            ]
+                        ]
                 ]
             ], 422); 
         }
