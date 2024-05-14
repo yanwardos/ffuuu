@@ -13,8 +13,8 @@ class AuthController extends Controller
 {
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'email' => 'required|min:8|string',
+            'password' => 'required|min:8|string',
             'deviceId' => 'required|string'
         ]);
         

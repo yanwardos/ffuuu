@@ -147,7 +147,7 @@ class UserDataController extends Controller
     public function updateUserPassword(Request $request){ 
         // VALIDATE INPUT
         $validator = Validator::make($request->all(),[
-            'newPassword' => 'required|string',
+            'newPassword' => 'required|min:8|string',
             'confirmPassword' => 'required|string|same:newPassword',
             'currentPassword' => 'required|string|'
         ]);
