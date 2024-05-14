@@ -17,8 +17,8 @@ class UserDataController extends Controller
             'status' => 'success',
             'message' => 'Success getting user data.',
             'data' => [
-                'user' => $request->user()->only(['name', 'email', 'avatar'])
-            ]
+                    'user' => $request->user()->only(['name', 'email', 'avatar'])
+                ]
             ], 200);
     }
 
@@ -76,7 +76,7 @@ class UserDataController extends Controller
         return redirect('avatar/'.$request->user()->avatar);
     }
 
-    public function updateUserAvatar(Request $request, ){
+    public function updateUserAvatar(Request $request){
         // check if file exist
         if(!$request->hasFile('imgAvatar')){
             return response()->json([
@@ -141,6 +141,59 @@ class UserDataController extends Controller
             'data' => [
                 'user' => $user->only(['name', 'email', 'avatar'])
                 ]
+        ], 200);
+    }
+
+    public function updateUserPassword(Request $request){ 
+        // VALIDATE INPUT
+        $validator = Validator::make($request->all(),[
+            'newPassword' => 'required|string',
+            'confirmPassword' => 'required|string|same:newPassword',
+            'currentPassword' => 'required|string|'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Form input error.',
+                'data' => [
+                    'formError' => $validator->errors()
+                    ]
+                ], 422);
+        }
+        
+        // GET USER
+        $user = $request->user();
+        if(!$user){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found.'
+            ], 400); 
+        }
+        
+        // CHECK IS PASSWORD IS CORRECT
+        if(!Hash::check($request->input('currentPassword'), $user->password)){ 
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Wrong password.',
+                'data' => [
+                    'formError' => ['Please enter correct password.']
+                ]
+            ], 422); 
+        }
+
+        $user->password = Hash::make($request->input('newPassword'));
+
+        if(!$user->save()){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot update user data.'
+            ], 400);
+        }
+ 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password changed.'
         ], 200);
     }
 }

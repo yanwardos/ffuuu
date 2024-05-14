@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/verifyAuth', [AuthController::class, 'v
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('userData', [UserDataController::class, 'getUserData']);
     Route::patch('userData', [UserDataController::class, 'updateUserData']);
+    Route::patch('userPassword', [UserDataController::class, 'updateUserPassword']);
     Route::get('userAvatar', [UserDataController::class, 'getUserAvatar']);
     Route::post('userAvatar', [UserDataController::class, 'updateUserAvatar']);
 });
