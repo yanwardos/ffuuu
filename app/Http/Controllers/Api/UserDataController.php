@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserDataController extends Controller
 {
@@ -63,7 +66,17 @@ class UserDataController extends Controller
     }
 
     public function getUserAvatar(Request $request) {
+        if(!$request->user()){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found.'
+            ], 400);
+        }
+
+        return redirect('avatar/'.$request->user()->avatar);
         
+        $url = Storage::url($request->user()->avatar);
+        echo $url;
     }
 
     public function updateUserAvatar(Request $request, ){
@@ -91,12 +104,29 @@ class UserDataController extends Controller
         $fileExt = $request->file('imgAvatar')->getClientOriginalExtension();
         $filenameHash = uniqid("avatar_".time());
         $filenameWithExt = $filenameHash.'.'.$fileExt;
+ 
+        // check folder
+        if(!File::exists(env('PATH_USER_AVATAR'))){
+            File::makeDirectory(env('PATH_USER_AVATAR'));
+        }
 
+        // store
         if(!$request->file('imgAvatar')->storeAs(env('PATH_USER_AVATAR'), $filenameWithExt)){
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Failed storing file.'
             ], 400);
+        }
+
+        // delete previous file 
+        $oldAvatarPath = env('PATH_USER_AVATAR').'/'.$user->avatar;
+        if(File::exists($oldAvatarPath)){ 
+            if(!Storage::delete($oldAvatarPath)){
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Failed deleting old avatar.'
+                ], 400); 
+            }
         }
 
         // save filepath to user
