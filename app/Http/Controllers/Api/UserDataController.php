@@ -74,9 +74,6 @@ class UserDataController extends Controller
         }
 
         return redirect('avatar/'.$request->user()->avatar);
-        
-        $url = Storage::url($request->user()->avatar);
-        echo $url;
     }
 
     public function updateUserAvatar(Request $request, ){
