@@ -1,0 +1,4 @@
+[01-Sep-2024 13:45:35 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/yanwardo/vfr.yanwardos.my.id/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/yanwardo/vfr.yanwardos.my.id/bootstrap/app.php on line 14

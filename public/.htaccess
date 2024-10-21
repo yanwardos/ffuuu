@@ -19,3 +19,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+RewriteCond %{HTTP_HOST} ^vfr\.yanwardos\.my\.id$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.vfr\.yanwardos\.my\.id$
+RewriteRule ^/?$ "https\:\/\/vfr\.igoniometer\.my\.id\/" [R=302,L]
