@@ -68,7 +68,9 @@ return [
 
     'links' => [
         // public_path('storage') => storage_path('app/public'),
-        public_path('avatar') => storage_path('app/avatar')
+        public_path('avatar') => storage_path('app/avatar'),
+        public_path('clothing/fbx') => storage_path('app/clothing/fbx'),
+        public_path('clothing/preview') => storage_path('app/clothing/preview')
     ],
 
 ];

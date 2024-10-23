@@ -15,7 +15,7 @@
                 <li class="breadcrumb-item">
                     <a href=" ">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Pengguna</li>
+                <li class="breadcrumb-item active">Model Baju</li>
             </ol>
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -25,13 +25,13 @@
 @section('content')
 <div class="mt-4 m-2">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-12 col-lg-8">
             <div class="card"> 
                 <div class="card-body">
                     @php
-                        $no = 0;
+                        $no = 1;
                     @endphp
-                    <x-adminlte-datatable id="table1" :heads="[['label'=>'No', 'width'=>5], 'Name', ['label' => 'Email', 'width' => 30], ['label' => 'Actions', 'no-export' => true, 'width' => 25 ]]">
+                    <x-adminlte-datatable id="table1" :heads="[['label'=>'No', 'width'=>5], 'Nama Desain', ['label'=>'Tipe Baju', 'width'=>15], ['label' => 'Deskripsi', 'width' => 30], ['label' => 'Actions', 'no-export' => true, 'width' => 20 ]]">
                         @foreach ($clothings as $clothing)
                             <tr>
                                 <td>{{$no++}}</td>
@@ -39,18 +39,21 @@
                                     {{$clothing->name}}
                                 </td>
                                 <td>
-                                    {{$clothing->email}}
+                                    {{$clothing->getGenderTypeName()}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('user.show', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
+                                    {{$clothing->description}}
+                                </td>
+                                <td>
+                                    <a href="{{ route('clothing.show', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
                                         <i class="fa fa-lg fa-fw fa-eye"></i>
                                         Detail
                                     </a>
-                                    <a href="{{ route('user.edit', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
+                                    <a href="{{ route('clothing.edit', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                         Ubah
                                     </a>
-                                    <button href="{{ route('user.delete', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
+                                    <button href="{{ route('clothing.delete', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                         Hapus
                                     </a>

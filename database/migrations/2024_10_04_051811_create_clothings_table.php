@@ -13,10 +13,14 @@ class CreateClothingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('clothings', function (Blueprint $table) {
-            $table->increments('id');
-
+        Schema::create('clothings', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->string('name', 255);
+            $table->longText('description');
+            $table->integer('genderType');
+            $table->string('fbxFilePath')->nullable();
+            $table->json('previewImagePaths')->nullable();
         });
     }
 
@@ -27,8 +31,6 @@ class CreateClothingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('clothings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('clothings');
     }
 }

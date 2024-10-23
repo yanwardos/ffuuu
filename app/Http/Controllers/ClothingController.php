@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clothing;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ClothingController extends Controller
 {
@@ -13,11 +16,11 @@ class ClothingController extends Controller
      */
     public function index()
     {
-        $clothings = [];
+        $clothings = Clothing::all();
 
         return view('admin.clothing.all', compact('clothings'));
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +28,7 @@ class ClothingController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.clothing.create');
     }
 
     /**
@@ -36,7 +39,38 @@ class ClothingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'clothingName' => 'required|string|max:255|min:5',
+            'clothingDescription' => 'required|string|max:500',
+            'genderType' => 'required|in:1,2,3'
+        ]);
+        
+
+        if($validator->fails()){
+            return redirect()
+            ->back()
+            ->withInput()
+            ->withErrors($validator->errors());
+        }
+
+        $clothing = new Clothing([
+            'name' => $request->input('clothingName'),
+            'description' => $request->input('clothingDescription'),
+            'genderType' => $request->input('genderType')
+        ]);
+
+        if(!$clothing->save()){
+            return redirect()
+            ->back()
+            ->withInput()
+            ->withErrors([
+                'messageError' => 'Gagal menambahkan model pakaian.'
+            ]);
+        }
+
+        return redirect()
+        ->to(route('clothing.all'))
+        ->with('messageSuccess', 'Berhasil menambahkan model pakaian.');
     }
 
     /**

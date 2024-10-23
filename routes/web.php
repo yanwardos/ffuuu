@@ -39,6 +39,8 @@ Route::prefix('user')->group(function () {
 // DATA BAJU
 Route::prefix('clothing')->group(function(){
     Route::get('all', [ClothingController::class, 'index'])->name('clothing.all');
+    Route::get('create', [ClothingController::class, 'create'])->name('clothing.create');
+    Route::post('create', [ClothingController::class, 'store'])->name('clothing.store');
     Route::get('/{id}', [ClothingController::class, 'show'])->name('clothing.show');
     Route::get('/{id}/edit', [ClothingController::class, 'edit'])->name('clothing.edit');
     Route::patch('/{id}/update', [ClothingController::class, 'update'])->name('clothing.update');

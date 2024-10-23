@@ -73,7 +73,15 @@
                             <a class="nav-link {{Route::is('clothing.all')? 'active' : ''}}" href="{{ route('clothing.all') }} ">
                                 <i class="nav-icon far fa-fw fa-circle"></i>
                                 <p>
-                                    Daftar Baju
+                                    Daftar Model
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{Route::is('clothing.create')? 'active' : ''}}" href="{{ route('clothing.create') }} ">
+                                <i class="nav-icon far fa-fw fa-circle"></i>
+                                <p>
+                                    Tambah Model
                                 </p>
                             </a>
                         </li>

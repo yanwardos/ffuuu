@@ -1,0 +1,18 @@
+---
+deployment:
+      tasks:
+        - export DEPLOYPATH=/home/yanwardo/vfritera.my.id
+        - cd $DEPLOYPATH 
+        - php artisan migrate:fresh
+        - php artisan db:seed
+        - rm public/avatar
+        - rm -r storage/app/avatar
+        - mkdir storage/app/avatar 
+        - rm -r public/clothing
+        - rm -r storage/app/clothing
+        - mkdir public/clothing
+        - mkdir storage/app/clothing
+        - mkdir storage/app/clothing/fbx
+        - mkdir storage/app/clothing/preview
+        - php artisan storage:link
+        - php artisan config:clear
