@@ -45,18 +45,24 @@
                                     {{$clothing->description}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('clothing.show', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
+                                    <a href="{{ route('clothing.show', ['clothing'=>$clothing]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
                                         <i class="fa fa-lg fa-fw fa-eye"></i>
                                         Detail
                                     </a>
-                                    <a href="{{ route('clothing.edit', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
+                                    <a href="{{ route('clothing.edit', ['clothing'=>$clothing]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                         Ubah
                                     </a>
-                                    <button href="{{ route('clothing.delete', ['id'=>$clothing->id]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
+                                    <button href="{{ route('clothing.delete', ['clothing'=>$clothing]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                         Hapus
-                                    </a>
+                                    </button>
+                                    @if (!$clothing->getFbxFilePaths())
+                                        <span class="badge bg-warning mb-1">Belum memiliki file model .fbx</span>
+                                    @endif
+                                    @if (!$clothing->getPreviewImagePaths())
+                                        <span class="badge bg-warning mb-1">Belum memiliki file gambar preview</span>
+                                    @endif 
                                 </td>
                             </tr>
                         @endforeach 

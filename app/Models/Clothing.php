@@ -38,4 +38,20 @@ class Clothing extends Model
                 break;
         }
     }
+
+    public function getFbxFilePaths(){
+        if (!isset($this->fbxFilePath)) return [];
+        if (is_null($this->fbxFilePath)) return [];
+
+        $files = json_decode($this->fbxFilePath);
+        return $files;
+    }
+
+    public function getPreviewImagePaths(){
+        if (!isset($this->previewImagePaths)) return [];
+        if (is_null($this->previewImagePaths)) return [];
+
+        $files = json_decode($this->previewImagePaths);
+        return $files;
+    }
 }

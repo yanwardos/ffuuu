@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClothingController;
-use App\Http\Controllers\UserController; 
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,10 +40,22 @@ Route::prefix('user')->group(function () {
 // DATA BAJU
 Route::prefix('clothing')->group(function(){
     Route::get('all', [ClothingController::class, 'index'])->name('clothing.all');
+
     Route::get('create', [ClothingController::class, 'create'])->name('clothing.create');
     Route::post('create', [ClothingController::class, 'store'])->name('clothing.store');
-    Route::get('/{id}', [ClothingController::class, 'show'])->name('clothing.show');
-    Route::get('/{id}/edit', [ClothingController::class, 'edit'])->name('clothing.edit');
-    Route::patch('/{id}/update', [ClothingController::class, 'update'])->name('clothing.update');
-    Route::delete('/{id}/delete', [ClothingController::class, 'destroy'])->name('clothing.delete');
+
+    Route::get('/{clothing}', [ClothingController::class, 'show'])->name('clothing.show');
+    Route::post('/{clothing}/preview/add', [ClothingController::class, 'storeImagePreview'])->name('clothing.preview.add');
+    Route::get('/{clothing}/edit', [ClothingController::class, 'edit'])->name('clothing.edit');
+
+    Route::patch('/{clothing}/update', [ClothingController::class, 'update'])->name('clothing.update');
+    Route::delete('/{clothing}/delete', [ClothingController::class, 'destroy'])->name('clothing.delete');
+});
+
+
+
+Route::get('vars', function () { 
+    foreach(User::all() as $user){
+        dump($user->attributesToArray()); 
+    }
 });

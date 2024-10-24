@@ -73,15 +73,20 @@ class ClothingController extends Controller
         ->with('messageSuccess', 'Berhasil menambahkan model pakaian.');
     }
 
+    public function storeImagePreview(Request $request, Clothing $clothing){
+        var_dump($request->input());
+        var_dump($clothing);
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Clothing $clothing)
     {
-        //
+        return view('admin.clothing.detail', compact('clothing'));
     }
 
     /**
@@ -106,6 +111,7 @@ class ClothingController extends Controller
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.
