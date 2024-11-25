@@ -42,18 +42,18 @@
                                     {{$user->email}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('user.show', ['id'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
+                                    <a href="{{ route('user.show', ['user'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-teal mr-1 mb-1 shadow" title="Details">
                                         <i class="fa fa-lg fa-fw fa-eye"></i>
                                         Detail
                                     </a>
-                                    <a href="{{ route('user.edit', ['id'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
+                                    <a href="{{ route('user.edit', ['user'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-primary mr-1 mb-1 shadow" title="Edit">
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                         Ubah
                                     </a>
-                                    <button href="{{ route('user.delete', ['id'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
+                                    <button href="{{ route('user.delete', ['user'=>$user->id]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                         Hapus
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach 

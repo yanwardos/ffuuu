@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 
 class Clothing extends Model
 {
@@ -53,5 +54,25 @@ class Clothing extends Model
 
         $files = json_decode($this->previewImagePaths);
         return $files;
+    }
+
+    public function getPreviewImageFullPaths(){ 
+        $files = $this->getPreviewImagePaths();
+
+        $fullPath = [];
+        foreach ($files as $file) {
+            $url = URL::to(env("PATH_CLOTHING_GALLERY").'/'.$file);
+            array_push($fullPath, $url);
+        }
+
+        return $fullPath;
+    }
+
+    public function addPreviewImagePath($fileName){
+        $current = $this->getPreviewImagePaths();
+        array_push($current, $fileName);
+        $this->previewImagePaths = json_encode($current);
+
+        return $current;
     }
 }

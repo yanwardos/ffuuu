@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clothing;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ClothingController extends Controller
@@ -20,7 +21,7 @@ class ClothingController extends Controller
 
         return view('admin.clothing.all', compact('clothings'));
     }
- 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -44,13 +45,13 @@ class ClothingController extends Controller
             'clothingDescription' => 'required|string|max:500',
             'genderType' => 'required|in:1,2,3'
         ]);
-        
 
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors($validator->errors());
+                ->back()
+                ->withInput()
+                ->withErrors($validator->errors());
         }
 
         $clothing = new Clothing([
@@ -59,23 +60,70 @@ class ClothingController extends Controller
             'genderType' => $request->input('genderType')
         ]);
 
-        if(!$clothing->save()){
+        if (!$clothing->save()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors([
-                'messageError' => 'Gagal menambahkan model pakaian.'
-            ]);
+                ->back()
+                ->withInput()
+                ->withErrors([
+                    'messageError' => 'Gagal menambahkan model pakaian.'
+                ]);
         }
 
         return redirect()
-        ->to(route('clothing.all'))
-        ->with('messageSuccess', 'Berhasil menambahkan model pakaian.');
+            ->to(route('clothing.all'))
+            ->with('messageSuccess', 'Berhasil menambahkan model pakaian.');
     }
 
-    public function storeImagePreview(Request $request, Clothing $clothing){
-        var_dump($request->input());
-        var_dump($clothing);
+    public function storeImagePreview(Request $request, Clothing $clothing)
+    {
+        // var_dump($request->input());
+        // var_dump($clothing);
+
+        // cek apakah file ada
+        if (!$request->hasFile('file')) {
+            return response()->json([
+                'status' => '',
+                'message' => 'Form input error.',
+                'data' => [
+                    'formError' => 'Image file not specified.'
+                ]
+            ], 422);
+        }
+
+        // jika file ada cek apakah clothing valid
+
+        // cek folder
+        if(!File::exists(env('PATH_CLOTHING_GALLERY'))){
+            File::makeDirectory(env('PATH_CLOTHING_GALLERY'));
+        }
+
+        // simpan file
+        $fileExt = $request->file('file')->getClientOriginalExtension();
+        $filenameHash = uniqid("preview_".time());
+        $filenameWithExt = $filenameHash.'.'. $fileExt;
+
+        if(!$request->file('file')->storeAs(env('PATH_CLOTHING_GALLERY'), $filenameWithExt)){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Failed storing file.'
+            ], 400);
+        }
+
+        // simpan ke database
+        $clothing->addPreviewImagePath($filenameWithExt);
+
+        if(!$clothing->save()){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Failed saving clothing data.'
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'Clothing updated.',
+        ], 200);
+
     }
 
     /**

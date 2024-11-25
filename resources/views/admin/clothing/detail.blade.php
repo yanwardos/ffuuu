@@ -68,6 +68,49 @@
                         <h3 class="card-title">Galeri</h3>
                     </div>
                     <div class="card-body">
+                        {{-- <div id="carouselGalery" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach ($clothing->getPreviewImageFullPaths() as $path) 
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="https://placehold.co/600x400" alt="First slide">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselGalery" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselGalery" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div> --}}
+                        <div id="carouselExampleControls" class="carousel slide p-4" data-ride="carousel">
+                            <div class="carousel-inner">
+                                @php
+                                    $first = true
+                                @endphp
+                                @foreach ($clothing->getPreviewImageFullPaths() as $path) 
+                                    <div class="carousel-item @if($first) active @endif">
+                                        <img class="d-block w-100 img img-fluid" src="{{$path}}" alt="First slide" style="max-height: 300pt; object-fit: cover;">
+                                    </div>
+                                    @php
+                                        $first = false;
+                                    @endphp
+                                @endforeach 
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+
                         <div id="actions" class="row">
                             <div class="col-lg-6">
                                 <div class="btn-group w-100">
@@ -108,8 +151,8 @@
                                     <strong class="error text-danger" data-dz-errormessage></strong>
                                 </div>
                                 <div class="col-4 d-flex align-items-center">
-                                    <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0"
-                                        aria-valuemax="100" aria-valuenow="0">
+                                    <div class="progress progress-striped active w-100" role="progressbar"
+                                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                                         <div class="progress-bar progress-bar-success" style="width:0%;"
                                             data-dz-uploadprogress></div>
                                     </div>
@@ -159,7 +202,7 @@
         previewNode.parentNode.removeChild(previewNode)
 
         var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            url: "{{route('clothing.preview.add', ['clothing'=>$clothing])}}", // Set the url
+            url: "{{ route('clothing.preview.add', ['clothing' => $clothing]) }}", // Set the url
             thumbnailWidth: 80,
             thumbnailHeight: 80,
             parallelUploads: 20,
@@ -183,7 +226,7 @@
         })
 
         myDropzone.on("sending", function(file, xhr, formData) {
-            formData.append("_token", "{{csrf_token()}}") 
+            formData.append("_token", "{{ csrf_token() }}")
             // Show the total progress bar when upload starts
             document.querySelector("#total-progress").style.opacity = "1"
             // And disable the start button
