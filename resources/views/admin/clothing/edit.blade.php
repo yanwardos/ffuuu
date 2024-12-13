@@ -42,7 +42,7 @@
                                 <label for="clothingName">Nama Model</label>
                                 <input type="text" class="form-control @error('clothingName') is-invalid @enderror"
                                     id="clothingName"
-                                    value="@if (old('clothingName')) {{ old('clothingName') }} @else {{$clothing->name}} @endif"
+                                    value="@if (old('clothingName')) {{ old('clothingName') }} @else {{ $clothing->name }} @endif"
                                     name="clothingName" placeholder="Baju Bagus">
                                 @error('clothingName')
                                     <div id="inpNameFeedback" class="invalid-feedback">
@@ -53,7 +53,11 @@
                             <div class="form-group">
                                 <label for="clothingDescription">Deskripsi</label>
                                 <textarea class="form-control @error('clothingDescription') is-invalid @enderror " name="clothingDescription"
-                                    id="clothingDescription" cols="10" rows="5">@if (old('clothingDescription')){{ old('clothingDescription') }}@else{{$clothing->description}}@endif</textarea>
+                                    id="clothingDescription" cols="10" rows="5">
+@if (old('clothingDescription'))
+{{ old('clothingDescription') }}@else{{ $clothing->description }}
+@endif
+</textarea>
                                 @error('clothingDescription')
                                     <div id="clothingDescriptionFeedback" class="invalid-feedback">
                                         {{ $message }}
@@ -63,11 +67,11 @@
                             <div class="form-group">
                                 <label for="genderType">Tipe Pakaian</label>
                                 <select class="form-control @error('genderType') is-invalid @enderror" name="genderType"
-                                    id="genderType"> 
+                                    id="genderType">
                                     <option value="" @if (!old('genderType')) selected @endif>
                                         Pilih Tipe
                                         Pakaian
-                                    </option> 
+                                    </option>
                                     <option value="1" @if (old('genderType') == 1 || $clothing->genderType == 1) selected @endif>Pria
                                     </option>
                                     <option value="2" @if (old('genderType') == 2 || $clothing->genderType == 2) selected @endif>Wanita
@@ -91,104 +95,139 @@
                     <div class="card-header">
                         <h3 class="card-title">Galeri</h3>
                     </div>
-                    <div class="card-body">  
+                    <div class="card-body">
                         <table class="table table-borderless table-responsive table-hover">
                             <tbody>
                                 @foreach ($clothing->getPreviewImageFullPaths() as $path)
                                     <tr class="mb-2">
                                         <td class="col-6">
-                                            <img class="img " style=" width: 100%; height: 200px; object-fit: cover;" src="{{$path}}" alt="Image" style="height: 200px">
-                                        </div>
-                                        <td class="col-6">
-                                            <form action="{{route('clothing.preview.delete', $clothing)}}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="imgPath" value="{{$path}}">
-                                                <button class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                    Hapus Gambar
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table> 
+                                            <img class="img " style=" width: 100%; height: 200px; object-fit: cover;"
+                                                src="{{ $path }}" alt="Image" style="height: 200px">
+                    </div>
+                    <td class="col-6">
+                        <form action="{{ route('clothing.preview.delete', $clothing) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="imgPath" value="{{ $path }}">
+                            <button class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                                Hapus Gambar
+                            </button>
+                        </form>
+                    </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                    </table>
 
-                        <br>
-                        <span class="h4 mb-2">Tambah Gambar</span>
-                        <div id="actions" class="row">
-                            <div class="col-lg-6">
-                                <div class="btn-group w-100">
-                                    <span class="btn btn-success col fileinput-button">
-                                        <i class="fas fa-plus"></i>
-                                        <span>Add files</span>
-                                    </span>
-                                    <button type="submit" class="btn btn-primary col start">
-                                        <i class="fas fa-upload"></i>
-                                        <span>Start upload</span>
-                                    </button>
-                                    <button type="reset" class="btn btn-warning col cancel">
-                                        <i class="fas fa-times-circle"></i>
-                                        <span>Cancel upload</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 d-flex align-items-center">
-                                <div class="fileupload-process w-100">
-                                    <div id="total-progress" class="progress progress-striped active" role="progressbar"
-                                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                        <div class="progress-bar progress-bar-success" style="width:0%;"
-                                            data-dz-uploadprogress></div>
-                                    </div>
-                                </div>
+                    <br>
+                    <span class="h4 mb-2">Tambah Gambar</span>
+                    <div id="actions" class="row">
+                        <div class="col-lg-6">
+                            <div class="btn-group w-100">
+                                <span class="btn btn-success col fileinput-button">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add files</span>
+                                </span>
+                                <button type="submit" class="btn btn-primary col start">
+                                    <i class="fas fa-upload"></i>
+                                    <span>Start upload</span>
+                                </button>
+                                <button type="reset" class="btn btn-warning col cancel">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>Cancel upload</span>
+                                </button>
                             </div>
                         </div>
-                        <div class="table table-striped files" id="previews">
-                            <div id="template" class="row mt-2">
-                                <div class="col-auto">
-                                    <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                </div>
-                                <div class="col d-flex align-items-center">
-                                    <p class="mb-0">
-                                        <span class="lead" data-dz-name></span>
-                                        (<span data-dz-size></span>)
-                                    </p>
-                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                </div>
-                                <div class="col-4 d-flex align-items-center">
-                                    <div class="progress progress-striped active w-100" role="progressbar"
-                                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                        <div class="progress-bar progress-bar-success" style="width:0%;"
-                                            data-dz-uploadprogress></div>
-                                    </div>
-                                </div>
-                                <div class="col-auto d-flex align-items-center">
-                                    <div class="btn-group">
-                                        <button class="btn btn-primary start">
-                                            <i class="fas fa-upload"></i>
-                                            <span>Start</span>
-                                        </button>
-                                        <button data-dz-remove class="btn btn-warning cancel">
-                                            <i class="fas fa-times-circle"></i>
-                                            <span>Cancel</span>
-                                        </button>
-                                        <button data-dz-remove class="btn btn-danger delete">
-                                            <i class="fas fa-trash"></i>
-                                            <span>Delete</span>
-                                        </button>
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="fileupload-process w-100">
+                                <div id="total-progress" class="progress progress-striped active" role="progressbar"
+                                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        {{-- Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin. --}}
+                    <div class="table table-striped files" id="previews">
+                        <div id="template" class="row mt-2">
+                            <div class="col-auto">
+                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <p class="mb-0">
+                                    <span class="lead" data-dz-name></span>
+                                    (<span data-dz-size></span>)
+                                </p>
+                                <strong class="error text-danger" data-dz-errormessage></strong>
+                            </div>
+                            <div class="col-4 d-flex align-items-center">
+                                <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0"
+                                    aria-valuemax="100" aria-valuenow="0">
+                                    <div class="progress-bar progress-bar-success" style="width:0%;"
+                                        data-dz-uploadprogress></div>
+                                </div>
+                            </div>
+                            <div class="col-auto d-flex align-items-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary start">
+                                        <i class="fas fa-upload"></i>
+                                        <span>Start</span>
+                                    </button>
+                                    <button data-dz-remove class="btn btn-warning cancel">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>Cancel</span>
+                                    </button>
+                                    <button data-dz-remove class="btn btn-danger delete">
+                                        <i class="fas fa-trash"></i>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    {{-- Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin. --}}
+                </div>
             </div>
+
         </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">File FBX</h3>
+                </div>
+                <div class="card-body">
+                    @if (!$clothing->fbxFilePath)
+                        <span class="h5 mb-2">Upload File</span> 
+                        <form action="">
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file"  class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Pilih file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form> 
+                    @else
+                    @endif
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    {{-- Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin. --}}
+                </div>
+            </div>
+
+        </div>
+    </div>
     </div>
 @endsection
 

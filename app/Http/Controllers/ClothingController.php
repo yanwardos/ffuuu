@@ -233,4 +233,12 @@ class ClothingController extends Controller
             ->to(route('clothing.edit', $clothing));
          
     }
+
+    public function storeFbx(Clothing $clothing, Request $request){
+
+    }
+
+    public function deleteFbx(Clothing $clothing, Request $request){
+        
+    }
 }
