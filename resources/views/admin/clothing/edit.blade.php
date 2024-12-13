@@ -202,28 +202,39 @@
                 </div>
                 <div class="card-body">
                     @if (!$clothing->fbxFilePath)
-                        <span class="h5 mb-2">Upload File</span> 
-                        <form action="">
-                            <div class="form-group">
-                                <label for="exampleInputFile">File input</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file"  class="custom-file-input" id="exampleInputFile">
-                                        <label class="custom-file-label" for="exampleInputFile">Pilih file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </form> 
-                    @else
+                    <div class="mb-1">
+                        <span class="badge badge-info">
+                            File sudah ada
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
                     @endif
+                    <form action="{{ route('clothing.fbx.store', $clothing) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+
+                        <span class="h5 mb-2">Upload File</span>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <div class="input-group">
+                                <input type="file" accept=".fbx" class="form-control " id="exampleInputFile"
+                                    name="file">
+                                <label class="custom-file-label" for="exampleInputFile">Pilih file</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fas fa-save"></i>
+                            Simpan
+                        </button>
+                    </form>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
+                    <div class="card-tools">
+                    </div>
                     {{-- Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin. --}}
                 </div>
+
             </div>
 
         </div>
@@ -292,4 +303,8 @@
             myDropzone.removeAllFiles(true)
         }
     </script>
+@endpush
+
+@push('js')
+    <script src="{{ asset('vendor/bootstrap/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 @endpush

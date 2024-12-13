@@ -47,7 +47,7 @@ Route::prefix('clothing')->group(function(){
     Route::get('/{clothing}', [ClothingController::class, 'show'])->name('clothing.show');
     Route::get('/{clothing}/edit', [ClothingController::class, 'edit'])->name('clothing.edit');
     Route::post('/{clothing}/update', [ClothingController::class, 'update'])->name('clothing.update');
-    Route::delete('/{clothing}/delete', [ClothingController::class, 'destroy'])->name('clothing.delete');
+    Route::post('/{clothing}/delete', [ClothingController::class, 'destroy'])->name('clothing.delete');
     
     Route::post('/{clothing}/preview/add', [ClothingController::class, 'storeImagePreview'])->name('clothing.preview.add');
     Route::post('/{clothing}/preview/delete', [ClothingController::class, 'deletePreview'])->name('clothing.preview.delete');

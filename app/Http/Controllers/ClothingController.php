@@ -76,7 +76,6 @@ class ClothingController extends Controller
 
     public function storeImagePreview(Request $request, Clothing $clothing)
     {
-
         // cek apakah file ada
         if (!$request->hasFile('file')) {
             return response()->json([
@@ -190,11 +189,10 @@ class ClothingController extends Controller
                 ]);
         }
 
-        
+
         return redirect()
             ->to(route('clothing.show', $clothing->id))
             ->with('messageSuccess', 'Berhasil mengubah data model pakaian.');
-
     }
 
     /**
@@ -208,37 +206,70 @@ class ClothingController extends Controller
         //
     }
 
-    public function deletePreview(Clothing $clothing, Request $request){
+    public function deletePreview(Clothing $clothing, Request $request)
+    {
         // echo File::exists(env('PATH_CLOTHING_GALLERY'));
-        
+
         // dd($request->all());
 
         $filePath = $request->imgPath;
         $filePath = explode(env('PATH_CLOTHING_GALLERY'), $filePath);
-        $fileName = $filePath[sizeof($filePath)-1];
+        $fileName = $filePath[sizeof($filePath) - 1];
         $fileName = str_replace('/', '', $fileName);
         $filePath = env('PATH_CLOTHING_GALLERY') . '/' . $fileName;
 
-        if(!File::delete($filePath)){
-
+        if (!File::delete($filePath)) {
         }
 
         $clothing->deletePreviewImagePath($fileName);
 
-        if(!$clothing->save()){
-            
+        if (!$clothing->save()) {
         }
 
         return redirect()
             ->to(route('clothing.edit', $clothing));
-         
     }
 
-    public function storeFbx(Clothing $clothing, Request $request){
+    public function storeFbx(Request $request, Clothing $clothing)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required'
+        ]);
 
-    }
+        if ($validator->fails()) {
+            return redirect()
+                ->to(route('clothing.edit', $clothing))
+                ->withErrors([
+                    'messageError' => 'File tidak ditemukan'
+                ]);
+        }
 
-    public function deleteFbx(Clothing $clothing, Request $request){
+        if (!File::exists(env('PATH_CLOTHING_FBX'))) {
+            File::makeDirectory(env('PATH_CLOTHING_FBX'));
+        }
+
+        // return redirect()
+        //     ->to(route('clothing.edit', $clothing))
+        //     ->with('messageSuccess', 'Berhasil menambahkan file fbx.');
+
+        // simpan file
+        $fileExt = $request->file('file')->getClientOriginalExtension();
+        $fileName = $request->file('file')->getClientOriginalName();
+        $filenameHash = uniqid("fbx_" . time());
+        $filenameWithExt = $filenameHash . '.' . $fileExt;
+
+        if(!$request->file('file')->move(env('PATH_CLOTHING_FBX'), $filenameWithExt)){
+            return redirect()
+                ->to(route('clothing.edit', $clothing))
+                ->withErrors([
+                    'messageError' => 'Error upload'
+                ]); 
+        }
         
+        return redirect()
+            ->to(route('clothing.edit', $clothing))
+            ->with('messageSuccess', 'Berhasil menambahkan file fbx.');
     }
+
+    public function deleteFbx(Clothing $clothing, Request $request) {}
 }
