@@ -29,13 +29,13 @@ class Clothing extends Model
     {
         switch ($this->getGenderType()) {
             case 1:
-                return 'pria';
+                return 'Pria';
                 break;
             case 2:
-                return 'wanita';
+                return 'Wanita';
                 break;
             case 3:
-                return 'unisex';
+                return 'Unisex';
                 break;
         }
     }
@@ -71,6 +71,18 @@ class Clothing extends Model
     public function addPreviewImagePath($fileName){
         $current = $this->getPreviewImagePaths();
         array_push($current, $fileName);
+        $this->previewImagePaths = json_encode($current);
+
+        return $current;
+    }
+
+    public function deletePreviewImagePath($fileName){
+        $current = $this->getPreviewImagePaths();
+        
+        if(($key = array_search($fileName, $current)) !== false){
+            array_splice($current, $key, 1);
+        }
+
         $this->previewImagePaths = json_encode($current);
 
         return $current;

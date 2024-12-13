@@ -62,8 +62,8 @@
                                 <label for="genderType">Tipe Pakaian</label>
                                 <select class="form-control @error('genderType') is-invalid @enderror" name="genderType" id="genderType"> 
                                     <option value="" @if (!old('genderType')) selected @endif>Pilih Tipe Pakaian</option>  
-                                    <option value="1" @if (old('genderType')==1) selected @endif>Laki-laki</option>
-                                    <option value="2" @if (old('genderType')==2) selected @endif>Perempuan</option>
+                                    <option value="1" @if (old('genderType')==1) selected @endif>Pria</option>
+                                    <option value="2" @if (old('genderType')==2) selected @endif>Wanita</option>
                                     <option value="3" @if (old('genderType')==3) selected @endif>Unisex</option>
                                 </select>
                                 @error('genderType')

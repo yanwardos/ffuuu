@@ -48,8 +48,10 @@ Route::prefix('clothing')->group(function(){
     Route::post('/{clothing}/preview/add', [ClothingController::class, 'storeImagePreview'])->name('clothing.preview.add');
     Route::get('/{clothing}/edit', [ClothingController::class, 'edit'])->name('clothing.edit');
 
-    Route::patch('/{clothing}/update', [ClothingController::class, 'update'])->name('clothing.update');
+    Route::post('/{clothing}/update', [ClothingController::class, 'update'])->name('clothing.update');
     Route::delete('/{clothing}/delete', [ClothingController::class, 'destroy'])->name('clothing.delete');
+    
+    Route::post('/{clothing}/preview/delete', [ClothingController::class, 'deletePreview'])->name('clothing.preview.delete');
 });
 
 

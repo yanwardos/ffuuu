@@ -105,6 +105,19 @@
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
 
+    
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(window).on('load', function() {
+            setTimeout(()=>{
+                $('.alert').slideUp();
+            }, 2000);
+        });
+    </script>
 </body>
 
 </html>

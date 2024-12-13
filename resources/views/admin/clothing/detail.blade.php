@@ -18,7 +18,7 @@
                     <li class="breadcrumb-item active">Detail Model Baju</li>
                 </ol>
             </div><!-- /.col -->
-        </div><!-- /.row -->
+        </div><!-- /.row --> 
     </div><!-- /.container-fluid -->
 @endsection
 
@@ -27,13 +27,13 @@
         <div class="row">
             <div class="col-12 col-lg-8">
                 <div class="card">
-                    {{-- <div class="card-header">
+                    <div class="card-header">
                         <div class="card-tools">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-save"></i> Simpan
-                            </button>
+                            <a href="{{route('clothing.edit', $clothing)}}" class="btn btn-warning">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8">
@@ -110,7 +110,7 @@
                                 <span class="sr-only">Next</span>
                             </a>
                         </div>
-
+{{-- 
                         <div id="actions" class="row">
                             <div class="col-lg-6">
                                 <div class="btn-group w-100">
@@ -174,7 +174,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -193,59 +193,59 @@
 @push('js')
     <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
     <script>
-        Dropzone.autoDiscover = false
+        // Dropzone.autoDiscover = false
 
-        // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-        var previewNode = document.querySelector("#template")
-        previewNode.id = ""
-        var previewTemplate = previewNode.parentNode.innerHTML
-        previewNode.parentNode.removeChild(previewNode)
+        // // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+        // var previewNode = document.querySelector("#template")
+        // previewNode.id = ""
+        // var previewTemplate = previewNode.parentNode.innerHTML
+        // previewNode.parentNode.removeChild(previewNode)
 
-        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            url: "{{ route('clothing.preview.add', ['clothing' => $clothing]) }}", // Set the url
-            thumbnailWidth: 80,
-            thumbnailHeight: 80,
-            parallelUploads: 20,
-            acceptedFiles: '.jpeg, .jpg, .png',
-            previewTemplate: previewTemplate,
-            autoQueue: false, // Make sure the files aren't queued until manually added
-            previewsContainer: "#previews", // Define the container to display the previews
-            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-        })
+        // var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+        //     url: "{{ route('clothing.preview.add', ['clothing' => $clothing]) }}", // Set the url
+        //     thumbnailWidth: 80,
+        //     thumbnailHeight: 80,
+        //     parallelUploads: 20,
+        //     acceptedFiles: '.jpeg, .jpg, .png',
+        //     previewTemplate: previewTemplate,
+        //     autoQueue: false, // Make sure the files aren't queued until manually added
+        //     previewsContainer: "#previews", // Define the container to display the previews
+        //     clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        // })
 
-        myDropzone.on("addedfile", function(file) {
-            // Hookup the start button
-            file.previewElement.querySelector(".start").onclick = function() {
-                myDropzone.enqueueFile(file)
-            }
-        })
+        // myDropzone.on("addedfile", function(file) {
+        //     // Hookup the start button
+        //     file.previewElement.querySelector(".start").onclick = function() {
+        //         myDropzone.enqueueFile(file)
+        //     }
+        // })
 
-        // Update the total progress bar
-        myDropzone.on("totaluploadprogress", function(progress) {
-            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-        })
+        // // Update the total progress bar
+        // myDropzone.on("totaluploadprogress", function(progress) {
+        //     document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+        // })
 
-        myDropzone.on("sending", function(file, xhr, formData) {
-            formData.append("_token", "{{ csrf_token() }}")
-            // Show the total progress bar when upload starts
-            document.querySelector("#total-progress").style.opacity = "1"
-            // And disable the start button
-            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-        })
+        // myDropzone.on("sending", function(file, xhr, formData) {
+        //     formData.append("_token", "{{ csrf_token() }}")
+        //     // Show the total progress bar when upload starts
+        //     document.querySelector("#total-progress").style.opacity = "1"
+        //     // And disable the start button
+        //     file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+        // })
 
-        // Hide the total progress bar when nothing's uploading anymore
-        myDropzone.on("queuecomplete", function(progress) {
-            document.querySelector("#total-progress").style.opacity = "0"
-        })
+        // // Hide the total progress bar when nothing's uploading anymore
+        // myDropzone.on("queuecomplete", function(progress) {
+        //     document.querySelector("#total-progress").style.opacity = "0"
+        // })
 
-        // Setup the buttons for all transfers
-        // The "add files" button doesn't need to be setup because the config
-        // `clickable` has already been specified.
-        document.querySelector("#actions .start").onclick = function() {
-            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-        }
-        document.querySelector("#actions .cancel").onclick = function() {
-            myDropzone.removeAllFiles(true)
-        }
+        // // Setup the buttons for all transfers
+        // // The "add files" button doesn't need to be setup because the config
+        // // `clickable` has already been specified.
+        // document.querySelector("#actions .start").onclick = function() {
+        //     myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+        // }
+        // document.querySelector("#actions .cancel").onclick = function() {
+        //     myDropzone.removeAllFiles(true)
+        // }
     </script>
 @endpush

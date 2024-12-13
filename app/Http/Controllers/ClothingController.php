@@ -76,8 +76,6 @@ class ClothingController extends Controller
 
     public function storeImagePreview(Request $request, Clothing $clothing)
     {
-        // var_dump($request->input());
-        // var_dump($clothing);
 
         // cek apakah file ada
         if (!$request->hasFile('file')) {
@@ -93,16 +91,16 @@ class ClothingController extends Controller
         // jika file ada cek apakah clothing valid
 
         // cek folder
-        if(!File::exists(env('PATH_CLOTHING_GALLERY'))){
+        if (!File::exists(env('PATH_CLOTHING_GALLERY'))) {
             File::makeDirectory(env('PATH_CLOTHING_GALLERY'));
         }
 
         // simpan file
         $fileExt = $request->file('file')->getClientOriginalExtension();
-        $filenameHash = uniqid("preview_".time());
-        $filenameWithExt = $filenameHash.'.'. $fileExt;
+        $filenameHash = uniqid("preview_" . time());
+        $filenameWithExt = $filenameHash . '.' . $fileExt;
 
-        if(!$request->file('file')->storeAs(env('PATH_CLOTHING_GALLERY'), $filenameWithExt)){
+        if (!$request->file('file')->storeAs(env('PATH_CLOTHING_GALLERY'), $filenameWithExt)) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Failed storing file.'
@@ -112,7 +110,7 @@ class ClothingController extends Controller
         // simpan ke database
         $clothing->addPreviewImagePath($filenameWithExt);
 
-        if(!$clothing->save()){
+        if (!$clothing->save()) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Failed saving clothing data.'
@@ -120,10 +118,9 @@ class ClothingController extends Controller
         }
 
         return response()->json([
-            'status' => 'success', 
+            'status' => 'success',
             'message' => 'Clothing updated.',
         ], 200);
-
     }
 
     /**
@@ -143,9 +140,9 @@ class ClothingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Clothing $clothing)
     {
-        //
+        return view('admin.clothing.edit', compact('clothing'));
     }
 
     /**
@@ -155,11 +152,50 @@ class ClothingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Clothing $clothing)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+            'clothingName' => 'required|string|max:255|min:5',
+            'clothingDescription' => 'required|string|max:500',
+            'genderType' => 'required|in:1,2,3'
+        ]);
 
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator->errors());
+        }
+
+        if (!$clothing) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors([
+                    'messageError' => 'Gagal menyimpan data pakaian.'
+                ]);
+        }
+
+        $clothing->name =  $request->input('clothingName');
+        $clothing->description =  $request->input('clothingDescription');
+        $clothing->genderType = $request->input('genderType');
+
+        if (!$clothing->save()) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors([
+                    'messageError' => 'Gagal menyimpan data pakaian.'
+                ]);
+        }
+
+        
+        return redirect()
+            ->to(route('clothing.show', $clothing->id))
+            ->with('messageSuccess', 'Berhasil mengubah data model pakaian.');
+
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -170,5 +206,31 @@ class ClothingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deletePreview(Clothing $clothing, Request $request){
+        // echo File::exists(env('PATH_CLOTHING_GALLERY'));
+        
+        // dd($request->all());
+
+        $filePath = $request->imgPath;
+        $filePath = explode(env('PATH_CLOTHING_GALLERY'), $filePath);
+        $fileName = $filePath[sizeof($filePath)-1];
+        $fileName = str_replace('/', '', $fileName);
+        $filePath = env('PATH_CLOTHING_GALLERY') . '/' . $fileName;
+
+        if(!File::delete($filePath)){
+
+        }
+
+        $clothing->deletePreviewImagePath($fileName);
+
+        if(!$clothing->save()){
+            
+        }
+
+        return redirect()
+            ->to(route('clothing.edit', $clothing));
+         
     }
 }
