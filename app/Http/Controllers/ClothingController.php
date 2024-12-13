@@ -265,6 +265,17 @@ class ClothingController extends Controller
                     'messageError' => 'Error upload'
                 ]); 
         }
+
+        $clothing->fbxFilePath = $filenameWithExt;
+
+        if(!$clothing->save()){
+            
+            return redirect()
+                ->to(route('clothing.edit', $clothing))
+                ->withErrors([
+                    'messageError' => 'Error upload'
+                ]); 
+        }
         
         return redirect()
             ->to(route('clothing.edit', $clothing))

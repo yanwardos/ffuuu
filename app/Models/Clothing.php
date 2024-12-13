@@ -44,8 +44,7 @@ class Clothing extends Model
         if (!isset($this->fbxFilePath)) return [];
         if (is_null($this->fbxFilePath)) return [];
 
-        $files = json_decode($this->fbxFilePath);
-        return $files;
+        return $this->fbxFilePath;
     }
 
     public function getPreviewImagePaths(){

@@ -201,7 +201,7 @@
                     <h3 class="card-title">File FBX</h3>
                 </div>
                 <div class="card-body">
-                    @if (!$clothing->fbxFilePath)
+                    @if ($clothing->fbxFilePath)
                     <div class="mb-1">
                         <span class="badge badge-info">
                             File sudah ada
