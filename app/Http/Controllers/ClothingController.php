@@ -201,9 +201,27 @@ class ClothingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Clothing $clothing)
     {
-        //
+        if (!$clothing) {
+            return redirect()
+                ->to(route('clothing.all'))
+                ->withErrors([
+                    'messageError' => 'Model tidak ditemukan'
+                ]);
+        }
+
+        if (!$clothing->delete()) {
+            return redirect()
+                ->to(route('clothing.all'))
+                ->withErrors([
+                    'messageError' => 'Gagal menghapus model pakaian'
+                ]);
+        }
+
+        return redirect()
+            ->to(route('clothing.all'))
+            ->with('messageSuccess', 'Berhasil mengubah data model pakaian.');
     }
 
     public function deletePreview(Clothing $clothing, Request $request)
@@ -258,25 +276,25 @@ class ClothingController extends Controller
         $filenameHash = uniqid("fbx_" . time());
         $filenameWithExt = $filenameHash . '.' . $fileExt;
 
-        if(!$request->file('file')->move(env('PATH_CLOTHING_FBX'), $filenameWithExt)){
+        if (!$request->file('file')->move(env('PATH_CLOTHING_FBX'), $filenameWithExt)) {
             return redirect()
                 ->to(route('clothing.edit', $clothing))
                 ->withErrors([
                     'messageError' => 'Error upload'
-                ]); 
+                ]);
         }
 
         $clothing->fbxFilePath = $filenameWithExt;
 
-        if(!$clothing->save()){
-            
+        if (!$clothing->save()) {
+
             return redirect()
                 ->to(route('clothing.edit', $clothing))
                 ->withErrors([
                     'messageError' => 'Error upload'
-                ]); 
+                ]);
         }
-        
+
         return redirect()
             ->to(route('clothing.edit', $clothing))
             ->with('messageSuccess', 'Berhasil menambahkan file fbx.');

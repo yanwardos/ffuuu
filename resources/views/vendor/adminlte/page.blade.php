@@ -70,7 +70,7 @@
                             Model Baju
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{Route::is('clothing.all')? 'active' : ''}}" href="{{ route('clothing.all') }} ">
+                            <a class="nav-link {{Route::is(['clothing.all', 'clothing.show', 'clothing.edit'])? 'active' : ''}}" href="{{ route('clothing.all') }} ">
                                 <i class="nav-icon far fa-fw fa-circle"></i>
                                 <p>
                                     Daftar Model
@@ -91,7 +91,7 @@
                             Informasi VFR
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">
+                            <a class="nav-link" href="{{route('about')}}">
                                 <i class="nav-icon fas fa-info-circle"></i>
                                 <p>
                                     Tentang VFR

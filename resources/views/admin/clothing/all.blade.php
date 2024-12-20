@@ -53,10 +53,10 @@
                                         <i class="fa fa-lg fa-fw fa-pen"></i>
                                         Ubah
                                     </a>
-                                    <button href="{{ route('clothing.delete', ['clothing'=>$clothing]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
+                                    <a href="{{ route('clothing.delete', ['clothing'=>$clothing]) }}" class="btn btn-xs p-1 btn-default text-danger mr-1 mb-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
                                         Hapus
-                                    </button>
+                                    </a>
                                     @if (!$clothing->getFbxFilePaths())
                                         <span class="badge bg-warning mb-1">Belum memiliki file model .fbx</span>
                                     @endif
