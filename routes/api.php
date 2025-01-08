@@ -2,8 +2,9 @@
 // TEST
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ClothingController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\UserDataController;
+use App\Http\Controllers\Api\UserDataController; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('userAvatar', [UserDataController::class, 'updateUserAvatar']);
 });
 
+// CLOTHING CATALOGS
+Route::middleware(['auth:sanctum'])->controller(ClothingController::class)->group(function(){
+    Route::get('/clothing/all', 'index');
+    Route::get('/clothing/{clothing}', 'show');
+});
 
+// Route::middleware(['auth:sanctum'])->group(function(){
+//     Route::get('clothing', ' ');
+// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user()->only(['name', 'email', 'avatar']);

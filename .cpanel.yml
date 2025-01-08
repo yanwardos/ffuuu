@@ -3,8 +3,8 @@ deployment:
       tasks:
         - export DEPLOYPATH=/home/yanwardo/vfritera.my.id
         - cd $DEPLOYPATH 
-        - php artisan migrate:fresh
-        - php artisan db:seed
+        # - php artisan migrate:fresh
+        # - php artisan db:seed
         - rm public/avatar
         - rm -r storage/app/avatar
         - mkdir storage/app/avatar 

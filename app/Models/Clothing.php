@@ -47,6 +47,16 @@ class Clothing extends Model
         return $this->fbxFilePath;
     }
 
+    public function getFbxFileFullPath(){
+        $file = $this->getFbxFilePaths();
+        if(!$file){
+            return "";
+        }
+        $url = URL::to(env('PATH_CLOTHING_FBX').'/'.$file);
+
+        return $url;
+    }
+
     public function getPreviewImagePaths(){
         if (!isset($this->previewImagePaths)) return [];
         if (is_null($this->previewImagePaths)) return [];
